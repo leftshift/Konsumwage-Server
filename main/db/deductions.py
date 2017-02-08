@@ -31,7 +31,7 @@ def average(start_time=datetime.datetime.min, end_time=datetime.datetime.max):
     except IndexError:
         return 0.0
 
-        return statistics.median([r.consumtion_delta for r in results])
+    return statistics.mean([r.consumtion_delta for r in results])
 
 
 def last_minute():

@@ -25,4 +25,8 @@ def create_app(debug=False, testing=False):
 
     socketio.init_app(app)
     db.init_app(app)
+
+    if testing:
+        from .test import randomize_weight
+        randomize_weight.start_generating(app.app_context())
     return app
