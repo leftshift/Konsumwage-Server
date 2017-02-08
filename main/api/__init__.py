@@ -2,10 +2,12 @@ from flask import Blueprint
 
 from .. import socketio
 
-websocket_api = Blueprint('websocket_api', __name__)
+api = Blueprint('api', __name__)
+
+from . import routes
 
 
-@websocket_api.route("/test")
+@api.route("/test")
 def test():
     socketio.emit('new_values', {'values': "test124"})
     return "success"
