@@ -1,0 +1,68 @@
+@import url('https://fonts.googleapis.com/css?family=Open+Sans:400,600,800');
+
+* {
+  font-family: "Open Sans", sans;
+}
+
+body {
+  width: 100%;
+  height: 100%;
+  margin: 0;
+  /*background-color: #000;*/
+}
+
+.stats {
+  display: flex;
+  width: 100%;
+  min-height: 5em;
+
+  padding-top: 0.5em;
+  padding-bottom: 0.5em;
+  background-color: #000;
+}
+
+/*Stat bar*/
+.stat {
+  flex-grow: 1;
+  min-width: 5em;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+.stat .number {
+  display: flex;
+  /*font-size: calc(4em + 5vmin);*/
+  font-size: 6em;
+  font-weight: 800;
+  color: #fff;
+}
+
+.stat .title {
+  font-size: 1.5em;
+  font-weight: 600;
+  color: #ddd;
+  display: block;
+}
+
+/* Fraction magic */
+span.frac {
+  /* hacky mcHackHack*/
+  padding-left: 0.3em;
+  display: inline-block;
+  font-size: 50%;
+  text-align: center;
+}
+span.frac > sup {
+  display: block;
+  border-bottom: 1px solid;
+  font: inherit;
+}
+span.frac > span {
+  display: none;
+}
+span.frac > sub {
+  display: block;
+  font: inherit;
+}

@@ -8,7 +8,10 @@ def add_measurement(timestamp, weight):
     if prev_meas:
         time_delta = timestamp - prev_meas.timestamp
         weight_delta = prev_meas.weight - weight
-        consumtion_delta = weight_delta * 1  # TODO: Replace with config value
+        if weight_delta < 0:  # weight was added
+            consumtion_delta = 0
+        else:
+            consumtion_delta = weight_delta * 1  # TODO: Replace with config value
         consumtion = prev_meas.consumtion + consumtion_delta
     else:
         time_delta = datetime.timedelta(0)

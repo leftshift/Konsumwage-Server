@@ -5,28 +5,46 @@
     <title>Konsumwage Dashboard</title>
     <script src="https://cdn.socket.io/socket.io-1.4.5.js"></script>
     <script src="{{ url_for("frontend.static", filename="jquery-3.1.1.min.js") }}" charset="utf-8"></script>
+    <link rel="stylesheet" href="{{ url_for("frontend.static", filename="dashboard.css") }}" media="screen" charset="utf-8">
   </head>
   <body>
-    <p>
-      Hello world!
-    </p>
+    <section class="stats">
+      <div class="stat">
+        <div class="number">
+          <span id="current_consumtion">0</span> <span class="frac"><sup>l</sup><span>/</span><sub>min</sub></span>
+        </div>
+        <span class="title">Current</span>
+      </div>
+      <div class="stat">
+        <div class="number">
+          <span id="average_consumtion">0</span> <span class="frac"><sup>l</sup><span>/</span><sub>min</sub></span>
+        </div>
+        <span class="title">Average</span>
+      </div>
+      <div class="stat">
+        <div class="number">
+          <span id="total_consumtion">0</span> l
+        </div>
+        <span class="title">Total</span>
+      </div>
+    </section>
     <table class="measurements">
-      <th>
+      <thead>
         <tr>
-          <td>
+          <th>
             Total
-          </td>
-          <td>
+          </th>
+          <th>
             Last Minute
-          </td>
-          <td>
+          </th>
+          <th>
             Last Delta
-          </td>
-          <td>
+          </th>
+          <th>
             Average
-          </td>
+          </th>
         </tr>
-      </th>
+      </thead>
       <tbody>
 
       </tbody>

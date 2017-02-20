@@ -1,3 +1,7 @@
+import eventlet
+eventlet.monkey_patch()  # magic to make socketio work from threads
+# https://github.com/miguelgrinberg/python-socketio/issues/16#issuecomment-195152403
+
 from flask import Flask, render_template
 from flask_socketio import SocketIO
 from flask_sqlalchemy import SQLAlchemy
@@ -5,7 +9,7 @@ from flask_sqlalchemy import SQLAlchemy
 from .db import db
 from .db.models import CustomEncoder
 
-socketio = SocketIO()
+socketio = SocketIO(logger=True)
 
 
 def create_app(debug=False, testing=False):

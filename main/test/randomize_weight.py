@@ -9,7 +9,7 @@ from ..api import operations
 class RandomWeightGenerator(threading.Thread):
     """docstring for RandomWeightGenerator."""
     def __init__(self, app_context, start_value):
-        super(RandomWeightGenerator, self).__init__()
+        threading.Thread.__init__(self)
         self.app_context = app_context
         self.current_weight = start_value
 
@@ -17,7 +17,7 @@ class RandomWeightGenerator(threading.Thread):
         while True:
             r = random.randint(4, 10)
             while r > 0:
-                time.sleep(1)
+                time.sleep(2)
                 with self.app_context:
                     operations.add_measurement(datetime.datetime.now(),
                                                self.current_weight)
