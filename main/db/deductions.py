@@ -52,5 +52,6 @@ def stats():
     avg = average()
     return {"total": cum,
             "last_minute": lm,
+            # Gives you liters/second
             "last_delta": {"consumtion": ld[0], "time": ld[1].total_seconds()},
             "average": avg}
