@@ -1,5 +1,5 @@
 import eventlet
-eventlet.monkey_patch()  # magic to make socketio work from threads
+# eventlet.monkey_patch()  # magic to make socketio work from threads
 # https://github.com/miguelgrinberg/python-socketio/issues/16#issuecomment-195152403
 
 from flask import Flask, render_template
@@ -12,7 +12,7 @@ from .db.models import CustomEncoder
 socketio = SocketIO(logger=True)
 
 
-def create_app(debug=False, testing=False):
+def create_app(debug=False):
     """Create an application."""
     app = Flask(__name__)
     app.debug = debug
@@ -29,8 +29,4 @@ def create_app(debug=False, testing=False):
 
     socketio.init_app(app)
     db.init_app(app)
-
-    if testing:
-        from .test import randomize_weight
-        randomize_weight.start_generating(app.app_context())
     return app

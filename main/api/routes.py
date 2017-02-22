@@ -16,7 +16,7 @@ def get_current():
     return jsonify(deductions.stats())
 
 
-@api.route("/put", methods=['POST'])
+@api.route("/put", methods=['PUT'])
 def put_current():
     json = request.get_json()
     # This is hacky, because it can't handle timezones
