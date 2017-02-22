@@ -2,7 +2,7 @@ data = []
 
 $(document).ready(function () {
   var socket = io.connect(location.protocol + '//' + document.domain + ':' + location.port);
-  generate_graph()
+  // generate_graph()
   past_data = $.ajax({
     url: location.protocol + '//' + document.domain + ':' + location.port + '/api/get/history'
   }).done(function (d) {
@@ -19,6 +19,20 @@ $(document).ready(function () {
   })
 });
 
-function generate_graph() {
-  d3.select("#graph").append("svg:svg").attr("width", "100%").attr("height", "100%")
-}
+
+var margin = {top: 30, right: 30, bottom: 40, left: 50},
+    width = 960 - margin.left - margin.right,
+    height = 500 - margin.top - margin.bottom;
+
+var x = d3.scaleTime()
+var y = d3.scaleLinear()
+
+var xAxis = d3.axisBottom(x);
+
+var yAxis = d3.axisLeft(y);
+
+d3.select("#graph").append("svg:svg")
+    .attr("width", "100%")
+    .attr("height", "100%")
+  .append("g")
+    .call(yAxis)
