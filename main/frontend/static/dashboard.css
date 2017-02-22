@@ -66,3 +66,10 @@ span.frac > sub {
   display: block;
   font: inherit;
 }
+
+/* Graph stuff */
+
+#graph {
+  height: 100%;
+  width: 100%;
+}
