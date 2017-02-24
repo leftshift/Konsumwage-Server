@@ -22,8 +22,8 @@ $(document).ready(function () {
     data = d;
 
     generate_graph(graphdata_from_history(data))
-    socket.on('new_values', function (msg) {
-      console.log("new_values: " + msg);
+    socket.on('major_update', function (msg) {
+      console.log("major_update: " + msg);
       $('.measurements tbody').append('<tr><td>'+msg.total+'</td><td>'+msg.last_minute+'</td><td>'+msg.last_delta.consumtion + '/' + msg.last_delta.time+'</td><td>'+msg.average+'</td></tr>');
 
       // In liters/second
