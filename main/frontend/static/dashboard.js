@@ -1,12 +1,27 @@
 data = []
 
+function graphdata_from_measurement(m) {
+  label = new Date(m.timestamp);
+  datasets = [m.consumtion, m.consumtion_delta / m.time_delta]
+  return [label, datasets]
+}
+
+function graphdata_from_history(history) {
+  new_data = [];
+  for (var m in history) {
+    new_data.push(graphdata_from_measurement(history[m]));
+  }
+  return new_data;
+}
+
 $(document).ready(function () {
   var socket = io.connect(location.protocol + '//' + document.domain + ':' + location.port);
-  // generate_graph()
   past_data = $.ajax({
     url: location.protocol + '//' + document.domain + ':' + location.port + '/api/get/history'
   }).done(function (d) {
     data = d;
+
+    generate_graph(graphdata_from_history(data))
     socket.on('new_values', function (msg) {
       console.log("new_values: " + msg);
       $('.measurements tbody').append('<tr><td>'+msg.total+'</td><td>'+msg.last_minute+'</td><td>'+msg.last_delta.consumtion + '/' + msg.last_delta.time+'</td><td>'+msg.average+'</td></tr>');
@@ -19,20 +34,52 @@ $(document).ready(function () {
   })
 });
 
+var ctx = document.getElementById("canvas")
 
-var margin = {top: 30, right: 30, bottom: 40, left: 50},
-    width = 960 - margin.left - margin.right,
-    height = 500 - margin.top - margin.bottom;
-
-var x = d3.scaleTime()
-var y = d3.scaleLinear()
-
-var xAxis = d3.axisBottom(x);
-
-var yAxis = d3.axisLeft(y);
-
-d3.select("#graph").append("svg:svg")
-    .attr("width", "100%")
-    .attr("height", "100%")
-  .append("g")
-    .call(yAxis)
+function generate_graph(dataset){
+  l = dataset.map(function (x) {
+    return x[0]
+  })
+  d1 = dataset.map(function (x) {
+    return x[1][0]
+  })
+  graph_data = {
+    labels: l,
+    datasets: [
+        {
+            label: "Total Consumtion",
+            fill: false,
+            lineTension: 0.1,
+            backgroundColor: "rgba(75,192,192,0.4)",
+            borderColor: "rgba(75,192,192,1)",
+            borderCapStyle: 'butt',
+            borderDash: [],
+            borderDashOffset: 0.0,
+            borderJoinStyle: 'miter',
+            pointBorderColor: "rgba(75,192,192,1)",
+            pointBackgroundColor: "#fff",
+            pointBorderWidth: 1,
+            pointHoverRadius: 5,
+            pointHoverBackgroundColor: "rgba(75,192,192,1)",
+            pointHoverBorderColor: "rgba(220,220,220,1)",
+            pointHoverBorderWidth: 2,
+            pointRadius: 1,
+            pointHitRadius: 10,
+            data: d1,
+            spanGaps: false,
+        }
+    ]
+  }
+  var lineChart = new Chart.Line(ctx, {
+    data: graph_data,
+    options: {
+        scales: {
+            yAxes: [{
+                ticks: {
+                    beginAtZero:true
+                }
+            }]
+        }
+    }
+  })
+}

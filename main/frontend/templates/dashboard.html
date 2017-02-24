@@ -4,7 +4,7 @@
     <meta charset="utf-8">
     <title>Konsumwage Dashboard</title>
     <script src="https://cdn.socket.io/socket.io-1.4.5.js"></script>
-    <script src="https://d3js.org/d3.v4.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.5.0/Chart.bundle.js"></script>
     <script src="{{ url_for("frontend.static", filename="jquery-3.1.1.min.js") }}" charset="utf-8"></script>
     <link rel="stylesheet" href="{{ url_for("frontend.static", filename="dashboard.css") }}" media="screen" charset="utf-8">
   </head>
@@ -30,7 +30,7 @@
       </div>
     </section>
     <section id=graph>
-
+      <canvas id="canvas"></canvas>
     </section>
     <table class="measurements">
       <thead>
