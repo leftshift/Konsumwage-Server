@@ -1,3 +1,4 @@
+from time import mktime
 import json
 from . import db
 
@@ -29,7 +30,7 @@ class Measurement(db.Model):
         return "<Measurement at %s>" % (self.timestamp)
 
     def to_json(self):
-        return {"timestamp": self.timestamp.isoformat(),
+        return {"timestamp": mktime(self.timestamp.timetuple()),
                 "time_delta": self.time_delta.total_seconds(),
                 "consumtion": self.consumtion,
                 "consumtion_delta": self.consumtion_delta,
