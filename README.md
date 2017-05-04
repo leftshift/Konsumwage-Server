@@ -7,3 +7,5 @@ Basically an internet enabled scale for measuring consumtion of something you ca
 The backend recieves this, and relays it to clients using WebSockets.
 
 The Clients recieve all past measurements and real time updates and plots these using Plot.js
+
+How the frontend currently looks: ![Preview of the frontend showing a graph](https://i.imgur.com/YtywMcg.png)
