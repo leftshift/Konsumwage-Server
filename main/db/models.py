@@ -14,16 +14,12 @@ class CustomEncoder(json.JSONEncoder):
 class Measurement(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     timestamp = db.Column(db.DateTime)
-    time_delta = db.Column(db.Interval)
-    consumtion = db.Column(db.Float)  # Cumulative Consumtion over time
     consumtion_delta = db.Column(db.Float)  # Delta to previous measurement
 
     weight = db.Column(db.Float)  # Weight at time point. Ultimately irrelevant
 
-    def __init__(self, timestamp, time_delta, consumtion, consumtion_delta, weight):
+    def __init__(self, timestamp, consumtion_delta, weight):
         self.timestamp = timestamp
-        self.time_delta = time_delta
-        self.consumtion = consumtion
         self.consumtion_delta = consumtion_delta
         self.weight = weight
 
@@ -32,7 +28,5 @@ class Measurement(db.Model):
 
     def to_json(self):
         return {"timestamp": mktime(self.timestamp.timetuple()),
-                "time_delta": self.time_delta.total_seconds(),
-                "consumtion": self.consumtion,
                 "consumtion_delta": self.consumtion_delta,
                 "weight": self.weight}

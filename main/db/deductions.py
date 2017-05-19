@@ -1,6 +1,7 @@
 # from flask_sqlalchemy import cast
 import datetime
 import statistics
+import functools
 from . import db, models
 
 
@@ -11,15 +12,21 @@ def in_range(start_time=datetime.datetime.min, end_time=datetime.datetime.max):
     )
     return measurements
 
+def reduce_measurements(total, add):
+    if not isinstance(total, float):
+        total = 0
+    v = add.consumtion_delta
+    if v>0:
+        return total+v
+    else:
+        return total
 
 def cumulative(start_time=datetime.datetime.min, end_time=datetime.datetime.max):
-    results = in_range(start_time, end_time)
-    try:
-        data_start = results[0]
-        data_end = results[-1]
-    except IndexError:
+    results = in_range(start_time, end_time).all()
+    if len(results) < 2:
         return 0.0
-    return data_end.consumtion - data_start.consumtion
+    consumtion = functools.reduce(reduce_measurements, results)
+    return consumtion
 
 
 def average(start_time=datetime.datetime.min, end_time=datetime.datetime.max):
@@ -34,24 +41,22 @@ def average(start_time=datetime.datetime.min, end_time=datetime.datetime.max):
     return statistics.mean([r.consumtion_delta for r in results])
 
 
-def last_minute():
-    one_minute_ago = datetime.datetime.now() - datetime.timedelta(minutes=1)
-    cumulative(start_time=one_minute_ago, end_time=datetime.datetime.now())
+# def last_minute():
+#     one_minute_ago = datetime.datetime.now() - datetime.timedelta(minutes=1)
+#     cumulative(start_time=one_minute_ago, end_time=datetime.datetime.now())
 
 
 def last_delta():
     m = db.session.query(models.Measurement).\
-        order_by(models.Measurement.timestamp.desc()).first()
-    return m.consumtion_delta, m.time_delta
+        order_by(models.Measurement.timestamp.desc()).all()
+    return m[-1].consumtion_delta, m[-1].timestamp - m[-2].timestamp
 
 
 def stats():
     cum = cumulative()
-    lm = last_minute()
     ld = last_delta()
     avg = average()
     return {"total": cum,
-            "last_minute": lm,
             # Gives you liters/second
             "last_delta": {"consumtion": ld[0], "time": ld[1].total_seconds()},
             "average": avg}
