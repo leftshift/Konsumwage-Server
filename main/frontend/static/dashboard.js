@@ -85,6 +85,7 @@ function generate_graph(dataset){
             pointHitRadius: 10,
             data: d1,
             spanGaps: false,
+            cubicInterpolationMode: 'linear'
         }
     ]
   }

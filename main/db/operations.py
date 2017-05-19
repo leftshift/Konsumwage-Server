@@ -30,7 +30,7 @@ def calulate_minor_update(value):
 
         last_measurement['timestamp'] = now
         last_measurement['weight'] = value
-        last_measurement['consumtion'] = total
+        last_measurement['consumtion'] = round(total, 1)
     return {
         'delta_time': delta_time.total_seconds(),
         'delta_consumtion': delta_consumtion,

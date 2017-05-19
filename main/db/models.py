@@ -12,7 +12,8 @@ class CustomEncoder(json.JSONEncoder):
 
 
 class Measurement(db.Model):
-    timestamp = db.Column(db.DateTime, primary_key=True)
+    id = db.Column(db.Integer, primary_key=True)
+    timestamp = db.Column(db.DateTime)
     time_delta = db.Column(db.Interval)
     consumtion = db.Column(db.Float)  # Cumulative Consumtion over time
     consumtion_delta = db.Column(db.Float)  # Delta to previous measurement
