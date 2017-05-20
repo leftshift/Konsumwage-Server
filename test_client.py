@@ -17,7 +17,7 @@ def generate():
         r = random.randint(4, 10)
         while r > 0:
             time.sleep(2)
-            add_measurement(current_weight, datetime.datetime.now().isoformat())
+            add_measurement(current_weight, datetime.datetime.now().timestamp())
             r -= 1
         current_weight -= random.randint(1, 2)
         if current_weight <= 0:
