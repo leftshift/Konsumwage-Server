@@ -33,18 +33,16 @@ function update_dashboard(delta_consumption, delta_time, average, total) {
 
 
 function major_update(msg) {
-  console.log("major_update: " + msg);
-  $('.measurements tbody').append('<tr><td>'+msg.total+'</td><td>'+msg.last_minute+'</td><td>'+msg.last_delta.consumption + '/' + msg.last_delta.time+'</td><td>'+msg.average+'</td></tr>');
   last_measurement = msg;
-  lineChart.data.datasets[0].data.push(msg.total)
-  lineChart.data.labels.push(new Date())
-  lineChart.update()
+  lineChart.data.datasets[0].data.push(msg.total);
+  lineChart.data.labels.push(new Date());
+  lineChart.update();
 
-  update_dashboard(msg.last_delta.consumption, msg.last_delta.time, msg.average, msg.total)
+  update_dashboard(msg.last_delta.consumption, msg.last_delta.time, msg.average, msg.total);
 }
 
 function minor_update(msg) {
-  update_dashboard(msg.delta_consumption, msg.delta_time, null, msg.total)
+  update_dashboard(msg.delta_consumption, msg.delta_time, null, msg.total);
 }
 
 $(document).ready(function () {
@@ -54,21 +52,21 @@ $(document).ready(function () {
   }).done(function (d) {
     data = d;
 
-    generate_graph(graphdata_from_history(data))
-    socket.on('major_update', major_update)
-    socket.on('minor_update', minor_update)
+    generate_graph(graphdata_from_history(data));
+    socket.on('major_update', major_update);
+    socket.on('minor_update', minor_update);
   });
 });
 
-var ctx = document.getElementById("canvas")
+var ctx = document.getElementById("canvas");
 
 function generate_graph(dataset){
   l = dataset.map(function (x) {
-    return x[0]
-  })
+    return x[0];
+  });
   d1 = dataset.map(function (x) {
-    return x[1][0]
-  })
+    return x[1][0];
+  });
   graph_data = {
     labels: l,
     datasets: [
@@ -96,7 +94,7 @@ function generate_graph(dataset){
             cubicInterpolationMode: 'linear'
         }
     ]
-  }
+  };
   lineChart = new Chart.Line(ctx, {
     data: graph_data,
     options: {
@@ -111,5 +109,5 @@ function generate_graph(dataset){
             }]
         }
     }
-  })
+  });
 }
