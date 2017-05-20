@@ -11,7 +11,7 @@ def minor_update(value):
 
 
 def add_measurement(timestamp, value):
-    print("Adding Measurement at %s of %i" % (timestamp, value))
+    print("Revieved Measurement at %s of %i" % (timestamp, value))
     if major_update_event.is_set():
         operations.add_measurement(timestamp, value)
         socketio.emit('major_update', deductions.stats())

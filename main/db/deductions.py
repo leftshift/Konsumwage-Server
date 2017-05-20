@@ -15,7 +15,7 @@ def in_range(start_time=datetime.datetime.min, end_time=datetime.datetime.max):
 def reduce_measurements(total, add):
     if not isinstance(total, float):
         total = 0
-    v = add.consumtion_delta
+    v = add.consumption_delta
     if v>0:
         return total+v
     else:
@@ -25,8 +25,8 @@ def cumulative(start_time=datetime.datetime.min, end_time=datetime.datetime.max)
     results = in_range(start_time, end_time).all()
     if len(results) < 2:
         return 0.0
-    consumtion = functools.reduce(reduce_measurements, results)
-    return consumtion
+    consumption = functools.reduce(reduce_measurements, results)
+    return consumption
 
 
 def average(start_time=datetime.datetime.min, end_time=datetime.datetime.max):
@@ -38,7 +38,7 @@ def average(start_time=datetime.datetime.min, end_time=datetime.datetime.max):
     except IndexError:
         return 0.0
 
-    return statistics.mean([r.consumtion_delta for r in results])
+    return statistics.mean([r.consumption_delta for r in results])
 
 
 # def last_minute():
@@ -49,7 +49,7 @@ def average(start_time=datetime.datetime.min, end_time=datetime.datetime.max):
 def last_delta():
     m = db.session.query(models.Measurement).\
         order_by(models.Measurement.timestamp.desc()).all()
-    return m[-1].consumtion_delta, m[-1].timestamp - m[-2].timestamp
+    return m[-1].consumption_delta, m[-1].timestamp - m[-2].timestamp
 
 
 def stats():
@@ -58,5 +58,5 @@ def stats():
     avg = average()
     return {"total": cum,
             # Gives you liters/second
-            "last_delta": {"consumtion": ld[0], "time": ld[1].total_seconds()},
+            "last_delta": {"consumption": ld[0], "time": ld[1].total_seconds()},
             "average": avg}

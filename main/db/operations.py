@@ -11,12 +11,12 @@ last_measurement = {
 }
 
 
-def calculate_consumtion_delta(weight_delta):
+def calculate_consumption_delta(weight_delta):
     if weight_delta < 0:  # weight was added
-        consumtion_delta = 0
+        consumption_delta = 0
     else:
-        consumtion_delta = weight_delta * 1  # TODO: Replace with config value
-    return consumtion_delta
+        consumption_delta = weight_delta * 1  # TODO: Replace with config value
+    return consumption_delta
 
 
 def calulate_minor_update(value):
@@ -24,15 +24,15 @@ def calulate_minor_update(value):
         global last_measurement
         now = datetime.datetime.now()
         delta_weight = last_measurement['weight'] - value
-        delta_consumtion = calculate_consumtion_delta(delta_weight)
+        delta_consumption = calculate_consumption_delta(delta_weight)
         delta_time = now - last_measurement['timestamp']
-        total = deductions.cumulative() + delta_consumtion
+        total = deductions.cumulative() + delta_consumption
         last_measurement['timestamp'] = now
         last_measurement['weight'] = value
         last_measurement['total'] = total
     return {
         'delta_time': delta_time.total_seconds(),
-        'delta_consumtion': delta_consumtion,
+        'delta_consumption': delta_consumption,
         'total': total}
 
 
@@ -41,12 +41,12 @@ def add_measurement(timestamp, weight):
         .order_by(models.Measurement.timestamp.desc()).first()
     if prev_meas:
         weight_delta = prev_meas.weight - weight
-        consumtion_delta = calculate_consumtion_delta(weight_delta)
+        consumption_delta = calculate_consumption_delta(weight_delta)
     else:
         weight_delta = 0.0
-        consumtion_delta = 0.0
+        consumption_delta = 0.0
 
-    meas = models.Measurement(timestamp, consumtion_delta, weight)
+    meas = models.Measurement(timestamp, consumption_delta, weight)
     db.session.add(meas)
     db.session.commit()
     with last_measurement_lock:

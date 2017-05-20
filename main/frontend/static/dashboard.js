@@ -4,42 +4,47 @@ var lineChart = null;
 var total = 0;
 var last_measurement;
 
-function graphdata_from_measurement(m) {
+function datapoint_from_measurement(m, total) {
   label = new Date(m.timestamp * 1000);
-  datasets = [m.consumtion, m.consumtion_delta / m.time_delta]
-  return [label, datasets]
+  datasets = [total, m.consumption_delta / m.time_delta];
+  return [label, datasets];
 }
 
 function graphdata_from_history(history) {
   new_data = [];
+  total = 0;
   for (var m in history) {
-    new_data.push(graphdata_from_measurement(history[m]));
+    if (history[m].consumption_delta > 0) {
+      total = total + history[m].consumption_delta;
+      console.log(total);
+    }
+    new_data.push(datapoint_from_measurement(history[m], total));
   }
   return new_data;
 }
 
-function update_dashboard(delta_consumtion, delta_time, average, total) {
-  $("#current_consumtion").text((delta_consumtion / delta_time).toFixed(1));
+function update_dashboard(delta_consumption, delta_time, average, total) {
+  $("#current_consumption").text((delta_consumption / delta_time).toFixed(1));
   if (average) {
-    $("#average_consumtion").text(average.toFixed(1));
+    $("#average_consumption").text(average.toFixed(1));
   }
-  $("#total_consumtion").text(total.toFixed(1));
+  $("#total_consumption").text(total.toFixed(1));
 }
 
 
 function major_update(msg) {
   console.log("major_update: " + msg);
-  $('.measurements tbody').append('<tr><td>'+msg.total+'</td><td>'+msg.last_minute+'</td><td>'+msg.last_delta.consumtion + '/' + msg.last_delta.time+'</td><td>'+msg.average+'</td></tr>');
+  $('.measurements tbody').append('<tr><td>'+msg.total+'</td><td>'+msg.last_minute+'</td><td>'+msg.last_delta.consumption + '/' + msg.last_delta.time+'</td><td>'+msg.average+'</td></tr>');
   last_measurement = msg;
   lineChart.data.datasets[0].data.push(msg.total)
   lineChart.data.labels.push(new Date())
   lineChart.update()
 
-  update_dashboard(msg.last_delta.consumtion, msg.last_delta.time, msg.average, msg.total)
+  update_dashboard(msg.last_delta.consumption, msg.last_delta.time, msg.average, msg.total)
 }
 
 function minor_update(msg) {
-  update_dashboard(msg.delta_consumtion, msg.delta_time, null, msg.total)
+  update_dashboard(msg.delta_consumption, msg.delta_time, null, msg.total)
 }
 
 $(document).ready(function () {
@@ -68,7 +73,7 @@ function generate_graph(dataset){
     labels: l,
     datasets: [
         {
-            label: "Total Consumtion",
+            label: "Total consumption",
             fill: false,
             lineTension: 0.1,
             backgroundColor: "rgba(75,192,192,0.4)",
