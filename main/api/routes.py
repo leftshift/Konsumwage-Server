@@ -19,7 +19,10 @@ def get_current():
 @api.route("/put", methods=['PUT'])
 def put_current():
     json = request.get_json()
-    timestamp = datetime.datetime.fromtimestamp(json["timestamp"])
+    if hasattr(json, timestamp):
+        timestamp = datetime.datetime.fromtimestamp(json["timestamp"])
+    else:
+        timestamp = datetime.datetime.now()
     value = json["value"]
     operations.add_measurement(timestamp, value)
     return jsonify({"result": "success"})
