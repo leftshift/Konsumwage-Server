@@ -19,7 +19,6 @@ def get_current():
 @api.route("/put", methods=['PUT'])
 def put_current():
     json = request.get_json()
-    # This is hacky, because it can't handle timezones
     timestamp = datetime.datetime.fromtimestamp(json["timestamp"])
     value = json["value"]
     operations.add_measurement(timestamp, value)

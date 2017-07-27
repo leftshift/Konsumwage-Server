@@ -16,7 +16,7 @@ def reduce_measurements(total, add):
     if not isinstance(total, float):
         total = 0
     v = add.consumption_delta
-    if v>0:
+    if v > 0:
         return total+v
     else:
         return total
