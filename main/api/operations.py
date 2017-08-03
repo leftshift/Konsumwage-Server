@@ -17,7 +17,7 @@ def add_measurement(timestamp, value):
         socketio.emit('major_update', deductions.stats())
 
         major_update_event.clear()
-        major_update_timer = Timer(10.0, set_major_update_flag)
+        major_update_timer = Timer(5.0, set_major_update_flag)
         major_update_timer.start()
     else:
         socketio.emit('minor_update', minor_update(value))  # need to factor in factor
