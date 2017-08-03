@@ -19,7 +19,7 @@ def get_current():
 @api.route("/put", methods=['PUT'])
 def put_current():
     json = request.get_json()
-    if hasattr(json, timestamp):
+    if hasattr(json, 'timestamp'):
         timestamp = datetime.datetime.fromtimestamp(json["timestamp"])
     else:
         timestamp = datetime.datetime.now()
