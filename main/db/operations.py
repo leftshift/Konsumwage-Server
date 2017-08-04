@@ -46,6 +46,9 @@ def add_measurement(timestamp, weight):
         weight_delta = 0.0
         consumption_delta = 0.0
 
+    if consumption_delta > 2.0: # too big, ignore
+        return
+
     meas = models.Measurement(timestamp, consumption_delta, weight)
     db.session.add(meas)
     db.session.commit()
