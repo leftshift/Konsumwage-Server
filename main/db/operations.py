@@ -10,6 +10,8 @@ last_measurement = {
     'total': 0
 }
 
+last_lowest = 0.0
+
 
 def calculate_consumption_delta(weight_delta):
     if weight_delta < 0:  # weight was added
@@ -37,6 +39,7 @@ def calulate_minor_update(value):
 
 
 def add_measurement(timestamp, weight):
+    global last_lowest
     prev_meas = models.Measurement.query\
         .order_by(models.Measurement.timestamp.desc()).first()
     if prev_meas:
@@ -48,11 +51,14 @@ def add_measurement(timestamp, weight):
 
     if consumption_delta > 2.0: # too big, ignore
         print("delta too big, ignoring: " + str(consumption_delta))
-        meas = models.Measurement(timestamp, 0, weight)
-        db.session.add(meas)
-        db.session.commit()
+        weight_delta = 0.0
 
-        return
+    if last_lowest == weight:
+        consumption_delta = 0.0
+    elif weight < last_lowest:
+        last_lowest = weight
+    elif prev_meas.weight + 5 < weight:
+        last_lowest = weight
 
     meas = models.Measurement(timestamp, consumption_delta, weight)
     db.session.add(meas)
