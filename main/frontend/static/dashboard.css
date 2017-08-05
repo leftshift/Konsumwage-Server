@@ -73,3 +73,7 @@ span.frac > sub {
   height: 90%;
   width: 100%;
 }
+
+#social {
+  text-align: center;
+}
