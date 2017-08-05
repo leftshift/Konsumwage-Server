@@ -10,7 +10,7 @@ last_measurement = {
     'total': 0
 }
 
-last_lowest = 0.0
+last_lowest = None
 
 
 def calculate_consumption_delta(weight_delta):
@@ -40,6 +40,9 @@ def calulate_minor_update(value):
 
 def add_measurement(timestamp, weight):
     global last_lowest
+    if last_lowest is None:
+        last_lowest = weight
+
     prev_meas = models.Measurement.query\
         .order_by(models.Measurement.timestamp.desc()).first()
     if prev_meas:
